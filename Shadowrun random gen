@@ -1,0 +1,80 @@
+import random
+
+# Expanded lists of names
+male_first_names = ["Arin", "Brynn", "Cale", "Dara", "Elric", "Fay", "Gavin", "Hale", "Ivor", "Jor", "Kane", "Liam", "Marek", "Nyle", "Owen", "Pike", "Quin", "Reed", "Soren", "Talon", "Uther", "Vance", "Wade", "Xander", "Yorick", "Zane"]
+female_first_names = ["Aria", "Brynn", "Cora", "Dara", "Elena", "Faye", "Gwen", "Hara", "Iris", "Jade", "Kara", "Lara", "Maeve", "Nina", "Opal", "Pia", "Quinn", "Rose", "Sara", "Tara", "Ula", "Vera", "Wyn", "Xena", "Yara", "Zara"]
+last_names = ["Brightwood", "Ironfist", "Stormwind", "Silverleaf", "Darkwood", "Shadowalker", "Fireforge", "Frostblade", "Windrider", "Stonehammer", "Ravenclaw", "Stormbreaker", "Moonshadow", "Duskblade", "Lightbringer"]
+
+# Possible options for each character attribute
+metatypes = ["Human", "Elf", "Dwarf", "Ork", "Troll"]
+archetypes = ["Street Samurai", "Mage", "Decker", "Shaman", "Rigger", "Physical Adept"]
+alignments = ["Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil", "Neutral Evil", "Chaotic Evil"]
+
+archetype_abilities = {
+    "Street Samurai": "Combat Reflexes",
+    "Mage": "Spellcasting",
+    "Decker": "Hacking",
+    "Shaman": "Summoning",
+    "Rigger": "Droning",
+    "Physical Adept": "Martial Arts"
+}
+
+skills = ["Body", "Quickness", "Strength", "Charisma", "Intelligence", "Willpower"]
+
+def roll_attribute_score():
+    return random.randint(1, 6)
+
+def generate_name():
+    gender = random.choice(["male", "female"])
+    first_name = random.choice(male_first_names if gender == "male" else female_first_names)
+    last_name = random.choice(last_names)
+    return f"{first_name} {last_name}"
+
+def generate_backstory(character):
+    metatype = character["Metatype"]
+    archetype = character["Archetype"]
+    alignment = character["Alignment"]
+    name = character["Name"]
+    backstories = [
+        f"{name} was always a scrappy kid, growing up on the mean streets of the city. 'You're gonna get yourself killed one day,' their friend warned. But {name} knew they had a calling to become a {archetype}.",
+        f"As a young {metatype}, {name} was always fascinated by the matrix and technology. 'One day, I'll be the best Decker in the Sprawl,' they promised. Now, as a {archetype}, they navigate the digital and physical worlds with ease.",
+        f"{name} discovered their magical abilities at a young age. 'You have a gift,' their mentor said. They trained hard to harness their power and now use it as a {archetype} to protect those who cannot protect themselves.",
+        f"Growing up in a small tribe, {name} always felt a deep connection to the spirits. 'The spirits speak to you,' the elder said. Now, as a {archetype}, they channel these spirits to aid them in their quests.",
+        f"{name} was a prodigy with machines and drones. 'You're a natural,' their instructor said. As a {archetype}, they use their skills to control and repair drones in the heat of battle.",
+        f"Always a disciplined warrior, {name} honed their body and mind to perfection. 'You're the perfect Physical Adept,' their trainer said. Now, they use their martial prowess to take down their enemies.",
+        f"With a knack for strategy and combat, {name} always led the charge in fights. 'You were born to be a Street Samurai,' their friend remarked. Now, they are a fearsome warrior on the streets.",
+        f"Coming from a line of powerful magicians, {name} was destined to be a Mage. 'Magic runs in your veins,' their mother said. They embraced their heritage and now wield powerful spells.",
+        f"As a natural leader, {name} excelled in organizing and leading teams. 'You have the makings of a great Rigger,' their mentor said. Now, they lead squads of drones into battle.",
+        f"{name} always had a way with people, easily earning their trust and loyalty. 'Your charisma is your greatest weapon,' their teacher said. As a {archetype}, they use their charm to manipulate and persuade."
+    ]
+    return random.choice(backstories) + f" They are a {alignment.lower()} {metatype.lower()}."
+
+def generate_character():
+    metatype = random.choice(metatypes)
+    archetype = random.choice(archetypes)
+    
+    alignment = random.choice(alignments)
+    
+    character = {
+        "Name": generate_name(),
+        "Metatype": metatype,
+        "Archetype": archetype,
+        "Alignment": alignment,
+        "Body": roll_attribute_score(),
+        "Quickness": roll_attribute_score(),
+        "Strength": roll_attribute_score(),
+        "Charisma": roll_attribute_score(),
+        "Intelligence": roll_attribute_score(),
+        "Willpower": roll_attribute_score(),
+        "Essence": roll_attribute_score(),
+        "Magic": roll_attribute_score(),
+        "Cyberware": random.choice(["None", "Low", "Moderate", "High"]),
+        "Special Ability": archetype_abilities[archetype],
+        "Skills": random.sample(skills, 3),
+    }
+    character["Backstory"] = generate_backstory(character)
+    return character
+
+character = generate_character()
+for attribute, value in character.items():
+    print(f"{attribute}: {value}")
